@@ -1,10 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Document with subtle gradient -->
+  <defs>
+    <linearGradient id="docGrad48" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow48">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
   <!-- Document -->
-  <rect x="6" y="3" width="36" height="42" rx="2" fill="#4A90E2" stroke="#2E5C8A" stroke-width="1"/>
+  <rect x="6" y="8" width="28" height="34" rx="2" fill="url(#docGrad48)" stroke="#495057" stroke-width="1" filter="url(#shadow48)"/>
+
   <!-- Document lines -->
-  <line x1="12" y1="12" x2="36" y2="12" stroke="#FFFFFF" stroke-width="2"/>
-  <line x1="12" y1="21" x2="36" y2="21" stroke="#FFFFFF" stroke-width="2"/>
-  <line x1="12" y1="30" x2="30" y2="30" stroke="#FFFFFF" stroke-width="2"/>
-  <!-- Pen/signature -->
-  <path d="M 18 33 Q 21 36 24 34.5 Q 27 33 30 36" stroke="#FF6B6B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <line x1="10" y1="14" x2="30" y2="14" stroke="#adb5bd" stroke-width="1.5"/>
+  <line x1="10" y1="19" x2="30" y2="19" stroke="#adb5bd" stroke-width="1.5"/>
+  <line x1="10" y1="24" x2="30" y2="24" stroke="#adb5bd" stroke-width="1.5"/>
+  <line x1="10" y1="29" x2="24" y2="29" stroke="#adb5bd" stroke-width="1.5"/>
+
+  <!-- Quill feather with detail -->
+  <path d="M 30 42 L 33 28 Q 34 22 37 18 Q 39 15 41 13 Q 43 11 42 9 Q 41 7 39 9 L 35 15 L 34 20 L 33 28 L 31 36"
+        fill="#8b4513" stroke="#654321" stroke-width="1"/>
+
+  <!-- Feather texture lines -->
+  <line x1="35" y1="18" x2="37" y2="15" stroke="#654321" stroke-width="0.5" opacity="0.5"/>
+  <line x1="36" y1="21" x2="38" y2="18" stroke="#654321" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Quill tip -->
+  <path d="M 30 42 L 31 38 L 33 39 Z" fill="#2c1810"/>
+
+  <!-- Signature on document -->
+  <path d="M 10 35 Q 13 33 16 35 Q 19 37 22 35 Q 24 34 26 35" stroke="#1864ab" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 </svg>

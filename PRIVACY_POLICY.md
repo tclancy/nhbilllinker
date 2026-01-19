@@ -23,6 +23,7 @@ NH Bill Linker is a Chrome extension designed to help users navigate New Hampshi
 ### Data Storage
 
 All data is stored **locally on your device** using Chrome's built-in storage system. Your data remains:
+
 - Private to your device
 - Never sent to our servers or any third party
 - Removed when you uninstall the extension

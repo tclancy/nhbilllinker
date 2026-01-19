@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- Document -->
+  <rect x="6" y="3" width="36" height="42" rx="2" fill="#4A90E2" stroke="#2E5C8A" stroke-width="1"/>
+  <!-- Document lines -->
+  <line x1="12" y1="12" x2="36" y2="12" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="12" y1="21" x2="36" y2="21" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="12" y1="30" x2="30" y2="30" stroke="#FFFFFF" stroke-width="2"/>
+  <!-- Pen/signature -->
+  <path d="M 18 33 Q 21 36 24 34.5 Q 27 33 30 36" stroke="#FF6B6B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

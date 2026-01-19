@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NH Bill Linker Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <h1>NH Bill Linker Settings</h1>
+    <p>Set default values for form parameters. Query parameters in the URL will override these defaults.</p>
+    
+    <form id="settingsForm">
+      <div id="settingsContainer" class="settings-list">
+        <!-- Settings will be populated here -->
+      </div>
+      
+      <button type="button" id="addParamButton" class="btn btn-secondary">Add Parameter</button>
+      <button type="submit" id="saveButton" class="btn btn-primary">Save Settings</button>
+    </form>
+  </div>
+  
+  <script src="dist/settings.js"></script>
+</body>
+</html>

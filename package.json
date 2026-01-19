@@ -1,0 +1,14 @@
+{
+  "name": "nh-bill-linker",
+  "version": "1.0.0",
+  "description": "Chrome extension to auto-populate form inputs from URL parameters",
+  "scripts": {
+    "build": "npm run update-hash && tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "update-hash": "node scripts/update-manifest-hash.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

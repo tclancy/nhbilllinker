@@ -6,7 +6,6 @@ bills.
 ## TODO
 
 - Handle dates in future months
-- Smarter date validation to avoid dates out of session?
 - URL builder for the reverse of this process (log to console for now)
 - Better screenshot for extension!
 - Automate zip: remove existing and zip up from parent
@@ -160,3 +159,30 @@ would be a click on the radio button `#pageBody_rdoPosition_1`.
 And that's it. We are not going to auto-submit the form because that feels spammy
 and possibly illegal and do you know the difference between breaking the law
 and a sick bird?
+
+## Tools
+
+### Screenshot Capture
+
+The project includes a Playwright-based script for capturing screenshots of the NH House schedule page with Chrome Web Store-compatible settings.
+
+**Command:**
+
+```bash
+npm run screenshot
+```
+
+**What it does:**
+
+- Launches a headless Chromium browser
+- Sets viewport to 1200x800 pixels
+- Uses a Chrome user agent string to avoid bot detection
+- Navigates to <https://gc.nh.gov/house/schedule/dailyschedule.aspx>
+- Captures a 24-bit PNG screenshot (no alpha channel) compatible with Chrome Web Store requirements
+- Saves the screenshot as `screenshot.png` in the project root
+
+**Note:** The NH House website may block automated requests by IP address. If the script times out, you may need to:
+
+- Run it from a different network
+- Use a proxy/VPN
+- Take a manual screenshot and convert it to 24-bit PNG format

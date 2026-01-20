@@ -3,6 +3,12 @@
 Chrome Extension for automating responses to New Hampshire House and Senate
 bills.
 
+## TODO
+
+- Handle dates in future months
+- Smarter date validation to avoid dates out of session?
+- URL builder for the reverse of this process (log to console for now)
+
 ## Installation
 
 ### For Development/Testing

@@ -8,9 +8,6 @@
     "48": "icons/icon-48.svg",
     "128": "icons/icon-128.png"
   },
-  "permissions": [
-    "storage"
-  ],
   "host_permissions": [
     "https://gc.nh.gov/*"
   ],
@@ -30,10 +27,5 @@
       ],
       "run_at": "document_start"
     }
-  ],
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "NH Bill Linker Settings"
-  },
-  "options_page": "settings.html"
+  ]
 }

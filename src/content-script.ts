@@ -281,25 +281,12 @@ function selectSupport(supportValue: string): boolean {
   return true;
 }
 
-// Get user settings from Chrome storage
-async function getSettings(): Promise<Record<string, string>> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get(null, (items: Record<string, any>) => {
-      resolve(items as Record<string, string>);
-    });
-  });
-}
-
-// Auto-populate form inputs based on URL parameters and settings
+// Auto-populate form inputs based on URL parameters
 async function autoPopulateForm(): Promise<void> {
   // Inject the script file first and wait for it to be ready
   await injectScript();
-  
-  const queryParams = getQueryParams();
-  const settings = await getSettings();
-  
-  // Merge query parameters and settings (query params take precedence)
-  const allParams = { ...settings, ...queryParams };
+
+  const allParams = getQueryParams();
   
   if (Object.keys(allParams).length === 0) {
     console.log('No parameters to populate');

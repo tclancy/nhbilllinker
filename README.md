@@ -8,6 +8,8 @@ bills.
 - Handle dates in future months
 - Smarter date validation to avoid dates out of session?
 - URL builder for the reverse of this process (log to console for now)
+- Better screenshot for extension!
+- Automate zip: remove existing and zip up from parent
 
 ## Installation
 

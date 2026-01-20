@@ -6,9 +6,11 @@
     "build": "npm run update-hash && tsc",
     "watch": "tsc --watch",
     "clean": "rm -rf dist",
-    "update-hash": "node scripts/update-manifest-hash.js"
+    "update-hash": "node scripts/update-manifest-hash.js",
+    "screenshot": "node scripts/capture-screenshot.js"
   },
   "devDependencies": {
+    "playwright": "^1.57.0",
     "typescript": "^5.3.3"
   }
 }

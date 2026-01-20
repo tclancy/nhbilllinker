@@ -8,7 +8,6 @@ bills.
 - Handle dates in future months
 - URL builder for the reverse of this process (log to console for now)
 - Better screenshot for extension!
-- Automate zip: remove existing and zip up from parent
 
 ## Installation
 
@@ -186,3 +185,20 @@ npm run screenshot
 - Run it from a different network
 - Use a proxy/VPN
 - Take a manual screenshot and convert it to 24-bit PNG format
+
+### Package for Distribution
+
+Creates a zip file of the extension for distribution or upload to the Chrome Web Store.
+
+**Command:**
+
+```bash
+npm run package
+```
+
+**What it does:**
+
+- Deletes any existing `nhbilllinker.zip` in the parent directory
+- Creates a new `nhbilllinker.zip` in the parent directory containing the entire project
+- Automatically excludes `node_modules`, `.git`, and hidden files to keep the package clean
+- Results in a distribution-ready zip file suitable for Chrome Web Store upload

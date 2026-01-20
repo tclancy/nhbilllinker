@@ -7,7 +7,8 @@
     "watch": "tsc --watch",
     "clean": "rm -rf dist",
     "update-hash": "node scripts/update-manifest-hash.js",
-    "screenshot": "node scripts/capture-screenshot.js"
+    "screenshot": "node scripts/capture-screenshot.js",
+    "package": "rm -f ../nhbilllinker.zip && cd .. && zip -r nhbilllinker.zip nhbilllinker -x '*/node_modules/*' '*/.git/*' '*/.*'"
   },
   "devDependencies": {
     "playwright": "^1.57.0",

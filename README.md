@@ -180,12 +180,6 @@ npm run screenshot
 - Captures a 24-bit PNG screenshot (no alpha channel) compatible with Chrome Web Store requirements
 - Saves the screenshot as `screenshot.png` in the project root
 
-**Note:** The NH House website may block automated requests by IP address. If the script times out, you may need to:
-
-- Run it from a different network
-- Use a proxy/VPN
-- Take a manual screenshot and convert it to 24-bit PNG format
-
 ### Package for Distribution
 
 Creates a zip file of the extension for distribution or upload to the Chrome Web Store.

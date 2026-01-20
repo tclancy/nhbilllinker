@@ -3,7 +3,13 @@
     "allow": [
       "Bash(magick:*)",
       "Bash(ls:*)",
-      "Bash(osascript:*)"
+      "Bash(osascript:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run screenshot:*)",
+      "Bash(npx playwright install:*)",
+      "Bash(git add:*)",
+      "Bash(npm run package:*)"
     ]
   }
 }

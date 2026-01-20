@@ -1,11 +1,20 @@
 const { chromium } = require('playwright');
 
 (async () => {
+  // Get image type from command line argument, default to 'jpeg'
+  const imageType = process.argv[2] || 'png';
+
+  // Validate image type
+  if (imageType !== 'png' && imageType !== 'jpeg') {
+    console.error('Error: imageType must be either "png" or "jpeg"');
+    process.exit(1);
+  }
+
   const browser = await chromium.launch({
     headless: true
   });
   const context = await browser.newContext({
-    viewport: { width: 1200, height: 800 },
+    viewport: { width: 1280, height: 800 },
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
     locale: 'en-US',
     timezoneId: 'America/New_York'
@@ -20,14 +29,14 @@ const { chromium } = require('playwright');
   // Wait a moment for dynamic content
   await page.waitForTimeout(2000);
 
-  // Take screenshot as 24-bit PNG (no alpha channel)
+  // Take screenshot
   await page.screenshot({
-    path: 'screenshot.png',
-    type: 'png',
+    path: `screenshot.${imageType}`,
+    type: imageType,
     omitBackground: false
   });
 
-  console.log('Screenshot saved to screenshot.png');
+  console.log(`Screenshot saved to screenshot.${imageType}`);
 
   await browser.close();
 })();

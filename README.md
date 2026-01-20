@@ -168,7 +168,19 @@ The project includes a Playwright-based script for capturing screenshots of the 
 **Command:**
 
 ```bash
-npm run screenshot
+npm run screenshot [imageType]
+```
+
+**Parameters:**
+
+- `imageType` (optional): Image format, either `png` or `jpeg`. Defaults to `jpeg` if not specified.
+
+**Examples:**
+
+```bash
+npm run screenshot          # Saves as screenshot.jpeg (default)
+npm run screenshot png      # Saves as screenshot.png
+npm run screenshot jpeg     # Saves as screenshot.jpeg
 ```
 
 **What it does:**
@@ -177,8 +189,8 @@ npm run screenshot
 - Sets viewport to 1200x800 pixels
 - Uses a Chrome user agent string to avoid bot detection
 - Navigates to <https://gc.nh.gov/house/schedule/dailyschedule.aspx>
-- Captures a 24-bit PNG screenshot (no alpha channel) compatible with Chrome Web Store requirements
-- Saves the screenshot as `screenshot.png` in the project root
+- Captures a screenshot in the specified format (PNG or JPEG)
+- Saves the screenshot as `screenshot.png` or `screenshot.jpeg` in the project root
 
 ### Package for Distribution
 

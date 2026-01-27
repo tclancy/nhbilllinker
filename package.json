@@ -8,7 +8,7 @@
     "clean": "rm -rf dist",
     "update-hash": "node scripts/update-manifest-hash.js",
     "screenshot": "node scripts/capture-screenshot.js",
-    "package": "rm -f ../nhbilllinker.zip && cd .. && zip -r nhbilllinker.zip nhbilllinker -x '*/node_modules/*' '*/.git/*' '*/.*'"
+    "package": "read -p 'Enter version: ' VERSION && npm version $VERSION --no-git-tag-version && node -e \"const fs=require('fs'); const m=JSON.parse(fs.readFileSync('manifest.json','utf8')); m.version='$VERSION'; fs.writeFileSync('manifest.json',JSON.stringify(m,null,2)+'\\n')\" && git add package.json manifest.json && git commit -m \"Version $VERSION\" && git tag -a v$VERSION -m \"Version $VERSION\" && npm run build && rm -f ../nhbilllinker.zip && cd .. && zip -r nhbilllinker.zip nhbilllinker -x '*/node_modules/*' '*/.git/*' '*/.*'"
   },
   "devDependencies": {
     "playwright": "^1.57.0",

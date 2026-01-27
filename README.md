@@ -7,7 +7,6 @@ bills.
 
 - Handle dates in future months
 - URL builder for the reverse of this process (log to console for now)
-- `package` should make sure the manifest has been bumped and run build beforehand
 
 ## Installation
 

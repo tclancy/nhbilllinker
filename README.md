@@ -6,7 +6,9 @@ bills.
 ## TODO
 
 - Handle dates in future months
-- URL builder for the reverse of this process (log to console for now)
+- Describe architecture lightly in this file
+- Good documentation for the Chrome extension page and here
+  - Explain to non-technical users why they want this
 
 ## Installation
 

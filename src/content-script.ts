@@ -249,10 +249,10 @@ function selectRole(_unused: string = ''): boolean {
 // Select support position for the bill
 function selectSupport(supportValue: string): boolean {
   const supportLower = supportValue.toLowerCase();
-  
+
   // Determine which radio button to select based on the support value
   let radioId: string | null = null;
-  
+
   // Positive cases: "for", "pro", "1"
   if (['for', 'pro', '1'].includes(supportLower)) {
     radioId = 'pageBody_rdoPosition_0';
@@ -261,25 +261,281 @@ function selectSupport(supportValue: string): boolean {
   else if (['against', 'anti', '0'].includes(supportLower)) {
     radioId = 'pageBody_rdoPosition_1';
   }
-  
+
   if (!radioId) {
     console.log(`Support value "${supportValue}" not recognized (use 'for', 'pro', '1', 'against', 'anti', or '0')`);
     return false;
   }
-  
+
   const radio = document.getElementById(radioId) as HTMLInputElement;
   if (!radio) {
     console.log(`Support radio button #${radioId} not found`);
     return false;
   }
-  
+
   console.log(`Selecting support position: ${supportLower}`);
   radio.checked = true;
   radio.dispatchEvent(new Event('change', { bubbles: true }));
   radio.dispatchEvent(new Event('input', { bubbles: true }));
-  
+
   return true;
 }
+
+// ============================================================================
+// URL BUILDER MODULE
+// ============================================================================
+
+interface FormState {
+  date: string | null;      // MMDD format
+  committee: string | null; // Full name
+  bill: string | null;      // Digits only
+  support: string | null;   // 'for' or 'against'
+}
+
+let urlBuilderIcon: HTMLElement | null = null;
+let formState: FormState = {
+  date: null,
+  committee: null,
+  bill: null,
+  support: null
+};
+
+// Build URL from current form state
+function buildUrlFromFormState(): string {
+  const baseUrl = 'https://gc.nh.gov/house/committees/remotetestimony/default.aspx';
+  const params = new URLSearchParams();
+
+  if (formState.date) {
+    params.append('date', formState.date);
+  }
+
+  if (formState.committee) {
+    params.append('committee', formState.committee);
+  }
+
+  if (formState.bill) {
+    params.append('bill', formState.bill);
+  }
+
+  if (formState.support) {
+    params.append('support', formState.support);
+  }
+
+  if (params.toString()) {
+    return `${baseUrl}?${params.toString()}`;
+  }
+
+  return baseUrl;
+}
+
+// Check if any form field has a value
+function hasAnyFormValue(): boolean {
+  return Object.values(formState).some(value => value !== null && value !== '');
+}
+
+// Update icon enabled/disabled state
+function updateIconState(): void {
+  if (!urlBuilderIcon) return;
+
+  if (hasAnyFormValue()) {
+    urlBuilderIcon.classList.remove('disabled');
+    urlBuilderIcon.classList.add('enabled');
+  } else {
+    urlBuilderIcon.classList.remove('enabled');
+    urlBuilderIcon.classList.add('disabled');
+  }
+}
+
+// Extract selected date from calendar
+function extractSelectedDate(): string | null {
+  const calendar = document.getElementById('dvSelectDate');
+  if (!calendar) return null;
+
+  // Look for the selected date (usually has a different style or class)
+  const selectedLink = calendar.querySelector('a[style*="font-weight:bold"]') ||
+                       calendar.querySelector('a.selected') ||
+                       calendar.querySelector('td.selected a');
+
+  if (selectedLink && selectedLink.textContent) {
+    const day = parseInt(selectedLink.textContent.trim(), 10);
+
+    // Validate day
+    if (day < 1 || day > 31) return null;
+
+    // Get month from calendar header
+    const header = calendar.querySelector('td.CalendarHeader')?.textContent || '';
+    const monthMatch = header.match(/(\d{1,2})\/\d{4}/);
+
+    if (monthMatch) {
+      const month = parseInt(monthMatch[1], 10);
+      // Format as MMDD with leading zeros
+      return `${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+    }
+  }
+
+  return null;
+}
+
+// Extract selected committee name
+function extractSelectedCommittee(): string | null {
+  const select = document.getElementById('pageBody_ddlCommittee') as HTMLSelectElement;
+  if (!select || select.selectedIndex <= 0) return null;
+
+  const selectedOption = select.options[select.selectedIndex];
+  return selectedOption.textContent?.trim() || null;
+}
+
+// Extract selected bill number (digits only)
+function extractSelectedBill(): string | null {
+  const select = document.getElementById('pageBody_ddlBills') as HTMLSelectElement;
+  if (!select || select.selectedIndex <= 0) return null;
+
+  const selectedOption = select.options[select.selectedIndex];
+  const billText = selectedOption.textContent?.trim() || '';
+
+  // Extract just the digits from the bill text
+  const digits = billText.replace(/\D/g, '');
+  return digits || null;
+}
+
+// Extract selected support position
+function extractSupportPosition(): string | null {
+  const forRadio = document.getElementById('pageBody_rdoPosition_0') as HTMLInputElement;
+  const againstRadio = document.getElementById('pageBody_rdoPosition_1') as HTMLInputElement;
+
+  if (forRadio && forRadio.checked) {
+    return 'for';
+  } else if (againstRadio && againstRadio.checked) {
+    return 'against';
+  }
+
+  return null;
+}
+
+// Update form state by reading current form values
+function updateFormState(): void {
+  formState.date = extractSelectedDate();
+  formState.committee = extractSelectedCommittee();
+  formState.bill = extractSelectedBill();
+  formState.support = extractSupportPosition();
+
+  updateIconState();
+}
+
+// Copy URL to clipboard and show feedback
+async function copyUrlToClipboard(): Promise<void> {
+  if (!hasAnyFormValue()) return;
+
+  const url = buildUrlFromFormState();
+
+  try {
+    await navigator.clipboard.writeText(url);
+
+    // Show pulse animation
+    if (urlBuilderIcon) {
+      urlBuilderIcon.classList.add('pulse');
+      setTimeout(() => {
+        urlBuilderIcon?.classList.remove('pulse');
+      }, 500);
+    }
+
+    console.log('[URL Builder] URL copied to clipboard:', url);
+  } catch (error) {
+    console.error('[URL Builder] Failed to copy URL to clipboard:', error);
+  }
+}
+
+// Inject the URL builder icon into the page
+function injectUrlBuilderIcon(): void {
+  // Only inject on remotetestimony page
+  if (!window.location.pathname.includes('remotetestimony')) {
+    return;
+  }
+
+  // Don't inject if already exists
+  if (document.getElementById('nhBillLinkerUrlBuilder')) {
+    return;
+  }
+
+  // Create container div
+  const container = document.createElement('div');
+  container.id = 'nhBillLinkerUrlBuilder';
+  container.className = 'disabled';
+  container.title = 'Copy shareable link';
+
+  // Inject SVG inline
+  container.innerHTML = `
+    <svg viewBox="0 0 491.521 491.521" xmlns="http://www.w3.org/2000/svg">
+      <polygon style="fill:#3A556A;" points="314.147,339.386 152.136,177.375 287.611,0.001 491.521,203.911 "/>
+      <polygon style="fill:#2F4859;" points="452.292,185.593 313.918,291.281 185.096,162.46 177.767,172.056 312.923,307.211 460.894,194.194 "/>
+      <polygon style="fill:#FCD462;" points="180.552,205.79 161.697,215.27 47.982,272.445 0,491.521 219.077,443.538 276.251,329.825 285.732,310.97 "/>
+      <g>
+        <path style="fill:#F6C358;" d="M13.604,488.541l115.93-115.93c8.69,4.253,19.443,2.865,26.666-4.358c9.094-9.094,9.095-23.839,0.001-32.933c-9.094-9.094-23.839-9.093-32.933,0.001c-7.223,7.224-8.611,17.977-4.358,26.666L2.979,477.916L0,491.521L13.604,488.541z"/>
+        <polygon style="fill:#F6C358;" points="180.551,205.79 161.696,215.27 276.251,329.826 285.732,310.97"/>
+      </g>
+    </svg>
+  `;
+
+  // Add click handler
+  container.addEventListener('click', copyUrlToClipboard);
+
+  // Append to body
+  document.body.appendChild(container);
+  urlBuilderIcon = container;
+
+  console.log('[URL Builder] Icon injected');
+}
+
+// Set up event listeners for form changes
+function setupFormChangeListeners(): void {
+  const selectors = [
+    'pageBody_ddlCommittee',
+    'pageBody_ddlBills',
+    'pageBody_ddlWho',
+    'pageBody_rdoPosition_0',
+    'pageBody_rdoPosition_1'
+  ];
+
+  selectors.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('change', updateFormState);
+    }
+  });
+
+  // Calendar clicks (date selection triggers page reload, capture before)
+  const calendar = document.getElementById('dvSelectDate');
+  if (calendar) {
+    calendar.addEventListener('click', () => {
+      setTimeout(updateFormState, 100);
+    });
+  }
+
+  console.log('[URL Builder] Event listeners attached');
+}
+
+// Initialize URL builder on page load
+function initializeUrlBuilder(): void {
+  // Only run on remotetestimony page
+  if (!window.location.pathname.includes('remotetestimony')) {
+    return;
+  }
+
+  // Inject icon
+  injectUrlBuilderIcon();
+
+  // Set up event listeners
+  setupFormChangeListeners();
+
+  // Initial state update
+  updateFormState();
+
+  console.log('[URL Builder] Initialized');
+}
+
+// ============================================================================
+// END URL BUILDER MODULE
+// ============================================================================
 
 // Auto-populate form inputs based on URL parameters
 async function autoPopulateForm(): Promise<void> {
@@ -322,7 +578,11 @@ async function autoPopulateForm(): Promise<void> {
 
 // Run when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', autoPopulateForm);
+  document.addEventListener('DOMContentLoaded', () => {
+    autoPopulateForm();
+    initializeUrlBuilder();
+  });
 } else {
   autoPopulateForm();
+  initializeUrlBuilder();
 }

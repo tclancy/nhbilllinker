@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NH Bill Linker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Auto-populate form inputs from URL parameters on gc.nh.gov",
   "icons": {
     "16": "icons/icon-16.png",
@@ -13,8 +13,12 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dist/injected.js"],
-      "matches": ["https://gc.nh.gov/*"]
+      "resources": [
+        "dist/injected.js"
+      ],
+      "matches": [
+        "https://gc.nh.gov/*"
+      ]
     }
   ],
   "content_scripts": [
@@ -24,6 +28,9 @@
       ],
       "js": [
         "dist/content-script.js"
+      ],
+      "css": [
+        "dist/url-builder.css"
       ],
       "run_at": "document_start"
     }
